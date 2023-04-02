@@ -78,9 +78,9 @@ class ActivationUnit(nn.Module):
         else:
             print('only dice and prelu can be chosen for activation function')
         
-    def forward(self,user,item): #[B,C]
-        cross = torch.mm(user,item.T)
-        x = torch.cat([user,cross,item],-1) #[B,B+2*C]
+    def forward(self,item1,item2): #[B,C]
+        cross = torch.mm(item1,item2.T)
+        x = torch.cat([item1,cross,item2],-1) #[B,B+2*C]
         x = self.linear1(x)
         x = self.af(x)
         x = self.linear2(x)
