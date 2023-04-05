@@ -17,6 +17,12 @@ coming soon...
 
 coming soon...
 
+♥ base model for DIN: https://arxiv.org/abs/1706.06978
+
+DIN的base模型，对用户历史兴趣建模采用了简单的求和操作，没有考虑兴趣之间的关系。
+
+DIN’s base model uses a simple summation operation to user’s historical interests without the relationship between interests.
+
 ♥ DIN: https://arxiv.org/abs/1706.06978
 
 DIN模型是阿里妈妈团队提出的CTR预估模型，它是一种基于注意力机制的深度兴趣网络模型，用于对用户行为序列数据建模。DIN模型通过引入注意力机制，将用户历史行为序列中的每个行为与候选广告进行交互，从而学习到用户的兴趣偏好，并预测用户是否会点击该广告。
@@ -33,11 +39,17 @@ SIM model is a retrieval-based CTR model proposed by Alibaba Mama team. Its adva
 
 3 多任务学习/multi-task models
 
+🤔 MoE: https://dl.acm.org/doi/pdf/10.1145/3219819.3220007
+
+MoE是由Google的研究人员提出的多任务学习模型,模型由多个专家网络和一个门控器组成。最后，所有专家的输出被加权求和，以生成最终输出。
+
+MoE is a multi-task learning model proposed by Google researchers. The model consists of multiple expert networks and one gate. Finally, the outputs of all experts are weighted and summed to generate the final output.
+
 🤔 MMoE: https://dl.acm.org/doi/pdf/10.1145/3219819.3220007
 
-MMoE是由Google的研究人员提出的多任务学习模型,模型由多个专家网络和一个门控器组成。最后，所有专家的输出被加权求和，以生成最终输出。
+MMoE是由Google的研究人员提出的多任务学习模型,模型由多个专家网络和多个门控器组成。最后，所有专家的输出被加权求和，以生成最终输出。
 
-MMoE is a multi-task learning model proposed by Google researchers. The model consists of multiple expert networks and a gate. Finally, the outputs of all experts are weighted and summed to generate the final output.
+MMoE is a multi-task learning model proposed by Google researchers. The model consists of multiple expert networks and several gates. Finally, the outputs of all experts are weighted and summed to generate the final output.
 
 快速开始/quick start
 ========
