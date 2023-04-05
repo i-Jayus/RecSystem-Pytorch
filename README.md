@@ -7,7 +7,9 @@ Currently, there are many open-source libraries for recommendation systems, but 
 
 模型列表/model list
 ========
-1 经典模型/traditional models
+1 元学习/meta learning
+
+coming soon...
 
 2 序列模型/sequence models
 
@@ -31,7 +33,11 @@ SIM model is a retrieval-based CTR model proposed by Alibaba Mama team. Its adva
 
 3 多任务学习/multi-task models
 
-🤔 MMoE:
+🤔 MMoE: https://dl.acm.org/doi/pdf/10.1145/3219819.3220007
+
+MMoE是由Google的研究人员提出的多任务学习模型,模型由多个专家网络和一个门控器组成。最后，所有专家的输出被加权求和，以生成最终输出。
+
+MMoE is a multi-task learning model proposed by Google researchers. The model consists of multiple expert networks and a gate. Finally, the outputs of all experts are weighted and summed to generate the final output.
 
 快速开始/quick start
 ========
@@ -39,3 +45,5 @@ pending...
 
 致谢/acknowledgement
 ========
+感谢所有对此项目有过帮助的人！ Thank you to everyone who has contributed to this project!
+
