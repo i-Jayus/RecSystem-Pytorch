@@ -9,6 +9,12 @@ import torch.nn as nn
 
 class MoE(nn.Module):
     def __init__(self,expert_num,hidden_size,input_size):
+        """
+        MOE input parameters
+        :param expert_num: int numbers of experts
+        :param hidden_size: moe layer input dimension
+        :param input_size: data embedding size
+        """
         super(MoE,self).__init__()
         self.expert_num = expert_num
         self.input_size = input_size
@@ -20,7 +26,7 @@ class MoE(nn.Module):
         self.softmax = nn.SoftMax()
         self.relu = nn.ReLU()
     
-    def forward(self,x):
+    def forward(self,x): # [user_embeddng, item_embedding]
         expert_outputs = []
         for i in range(self.expert_num):
             expert_outputs.append(self.relu(self.experts[i](x)))
@@ -34,6 +40,13 @@ class MoE(nn.Module):
 
 class MMoE(nn.Module):
     def __init__(self,expert_num,task_num,hidden_size,input_size):
+        """
+        MMOE input parameters
+        :param expert_num: int numbers of experts
+        :param task_num: int numbers of tasks
+        :param hidden_size: moe layer input dimension
+        :param input_size: data embedding size
+        """
         super(MMoE,self).__init__()
         self.expert_num = expert_num
         self.task_num = task_num
@@ -48,7 +61,7 @@ class MMoE(nn.Module):
         self.relu = nn.ReLU()
         self.softmax = nn.SoftMax()
     
-    def forward(self, x):
+    def forward(self, x): # [user_embeddng, item_embedding]
         expert_outputs = []
         gate_outputs = []
 

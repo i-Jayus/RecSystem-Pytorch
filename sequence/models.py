@@ -16,6 +16,13 @@ class STAMP(nn.Module):
 
 class base_model(nn.Module):
     def __init__(self,user_num,item_num,cate_num,hidden_size=64):
+        """
+        base model input parameters
+        :param user_num: int numbers of users
+        :param item_num: int numbers of items
+        :param cate_num: int numbers of categories
+        :param hidden_size: embedding_size
+        """
         super(base_model, self).__init__()
         self.user_num = user_num
         self.item_num = item_num
@@ -32,6 +39,12 @@ class base_model(nn.Module):
         )
         
     def forward(self,user,hist,item,cate):
+        """
+        :param user: user id
+        :param hist: list of history behaviors of user
+        :param item: item id
+        :param cate: category id of item
+        """
         user = self.u_emb(user).squeeze()
         item = self.i_emb(item).squeeze()
         cate = self.c_emb(cate).squeeze()
@@ -49,6 +62,13 @@ class base_model(nn.Module):
     
 class DIN(nn.Module):
     def __init__(self,user_num,item_num,cate_num,hidden_size=64):
+        """
+        DIN input parameters
+        :param user_num: int numbers of users
+        :param item_num: int numbers of items
+        :param cate_num: int numbers of categories
+        :param hidden_size: embedding_size
+        """
         super(DIN, self).__init__()
         self.user_num = user_num
         self.item_num = item_num
@@ -66,6 +86,12 @@ class DIN(nn.Module):
         self.au = m.ActivationUnit(hidden_size)
         
     def forward(self,user,hist,item,cate):
+        """
+        :param user: user id
+        :param hist: list of history behaviors of user
+        :param item: item id
+        :param cate: category id of item
+        """
         user = self.u_emb(user).squeeze()
         item = self.i_emb(item).squeeze()
         cate = self.c_emb(cate).squeeze()
@@ -89,6 +115,14 @@ coming soon------------------
 
 class DIEN(nn.Module):
     def __init__(self,user_num,item_num,cate_num,embedding_dim=32,hidden_dim=64):
+        """
+        DIEN input parameters
+        :param user_num: int numbers of users
+        :param item_num: int numbers of items
+        :param cate_num: int numbers of categories
+        :param embedding_dim: embedding size
+        :param hidden_dim: input dim for interest extractor
+        """
         super(DIEN, self).__init__()
         self.user_num = user_num
         self.item_num = item_num
@@ -125,7 +159,17 @@ class DIEN(nn.Module):
 '''
 
 class SIM(nn.Module):
-    def __init__(self,user_num,item_num,cate_num,time_span,hidden_size=64,mode='hard',t=0.8):
+    def __init__(self,user_num,item_num,cate_num,time_span,hidden_size=64,mode='hard',thre=0.8):
+        """
+        SIM input parameters
+        :param user_num: int numbers of users
+        :param item_num: int numbers of items
+        :param cate_num: int numbers of categories
+        :param time_span: time stamps
+        :param hidden_size: embedding_size
+        :param mode: sequence cutting strategy
+        :param thre: threshold for soft strategy for sequence cutting
+        """
         super(SIM,self).__init__()
         self.user_num = user_num
         self.item_num = item_num
@@ -136,7 +180,7 @@ class SIM(nn.Module):
         self.cate_embedding = nn.Embedding(cate_num,hidden_size)
         self.time_embedding = nn.Embedding(time_span,hidden_size)
         self.mode = mode
-        self.t = t
+        self.thre = thre
         self.linear =  nn.Sequential(
             nn.Linear(hidden_size * 6, 80),
             m.Dice(80),
@@ -147,6 +191,13 @@ class SIM(nn.Module):
         self.au = m.ActivationUnit(hidden_size * 2)
         
     def forward(self,user,hist,item,cate,time):  #hist: [item,cate,time]
+        """
+        :param user: user id
+        :param hist: list of history behaviors of user
+        :param item: item id
+        :param cate: category id of item
+        :param time: current time stamp
+        """
         user = self.user_embedding(user).squeeze()
         item = self.item_embedding(item).squeeze()
         cate = self.cate_embedding(cate).squeeze()
@@ -166,7 +217,7 @@ class SIM(nn.Module):
                 h_i = torch.cat([hist_i.squeeze().detach().numpy(),\
                                     time_i.squeeze().detach().numpy()],-1)
                 sim = torch.cosine_similarity(item, h_i, dim=0)
-                if sim >= self.t:
+                if sim >= self.thre:
                     h.append(h_i)            
             else: 
                 print('you can just choose "soft" or "hard" mode for SIM')
