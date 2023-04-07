@@ -39,6 +39,12 @@ SIM model is a retrieval-based CTR model proposed by Alibaba Mama team. Its adva
 
 3 多任务学习/multi-task models
 
+🤔 ESMM: https://arxiv.org/pdf/1804.07931.pdf
+
+ESMM模型是一种多任务学习的方法，用于预测点击后的转化率。它同时学习两个任务：点击率和点击后转化率，并利用它们的乘积关系来隐式地学习转化率，解决了样本选择偏差和数据稀疏问题。
+
+ESMM model is a multi-task learning method for predicting post-click conversion rate. It simultaneously learns two tasks: click-through rate and post-click conversion rate, and uses their product relationship to implicitly learn conversion rate, solving the problems of sample selection bias and data sparsity.
+
 🤔 MoE: https://dl.acm.org/doi/pdf/10.1145/3219819.3220007
 
 MoE是由Google的研究人员提出的多任务学习模型,模型由多个专家网络和一个门控器组成。最后，所有专家的输出被加权求和，以生成最终输出。
@@ -50,6 +56,12 @@ MoE is a multi-task learning model proposed by Google researchers. The model con
 MMoE是由Google的研究人员提出的多任务学习模型,模型由多个专家网络和多个门控器组成。最后，所有专家的输出被加权求和，以生成最终输出。
 
 MMoE is a multi-task learning model proposed by Google researchers. The model consists of multiple expert networks and several gates. Finally, the outputs of all experts are weighted and summed to generate the final output.
+
+🤔 PLE: https://dl.acm.org/doi/pdf/10.1145/3383313.3412236
+
+PLE是腾讯提出的多任务学习模型，旨在解决跷跷板问题（负迁移问题）。通过为不同任务引入独立的专家网络解耦学习目标。此外堆叠了多层CGC模块渐进式分层抽取学习。
+
+PLE is a multi-task learning model proposed by Tencent, aiming to solve the seesaw problem (negative transfer problem). It decouples the learning objectives by introducing independent expert networks for different tasks. Moreover, it stacks multiple CGC modules to progressively extract features.
 
 快速开始/quick start
 ========
