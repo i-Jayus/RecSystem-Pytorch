@@ -51,10 +51,12 @@ class base_model(nn.Module):
         h = []
         for i in range(len(hist)):
             h.append(self.i_emb(hist[i]).squeeze().detach().numpy())
+            
         h = torch.tensor(np.array(h),dtype = torch.float32)
         cur = torch.zeros_like(h[0])
         for i in range(len(h)):
             cur += h[i]
+            
         res = torch.cat([user,item,cate,cur],-1)
         res = self.linear(res)
         return res
@@ -102,9 +104,11 @@ class DIN(nn.Module):
             h.append(hist_i.squeeze().detach().numpy())
             weight = self.au(hist_i,item)
             weights.append(weight)
+            
         cur = torch.zeros_like(h[0])
         for i in range(len(h)):
             cur += torch.tensor(weights[i] * h[i], dtype=torch.float32)
+            
         res = torch.cat([user,item,cate,cur],-1)
         res = self.linear(res)
         return res
@@ -228,9 +232,11 @@ class SIM(nn.Module):
         for i in range(len(h)):
             weight = self.au(h[i],item)
             weights.append(weight)
+            
         cur = torch.zeros_like(h[0])
         for i in range(len(h)):
             cur += torch.tensor(weights[i] * h[i], dtype=torch.float32)
+            
         res = torch.cat([user,item,cate,cur],-1)
         res = self.linear(res)
         return res
