@@ -43,7 +43,7 @@ PLE是腾讯提出的多任务学习模型，旨在解决跷跷板问题（负�
 
 PLE is a multi-task learning model proposed by Tencent, aiming to solve the seesaw problem (negative transfer problem). It decouples the learning objectives by introducing independent expert networks for different tasks. Moreover, it can be considered as a model stacking multiple CGC modules to progressively extract features.
 
-🤔 MTL-EBR: https://arxiv.org/pdf/2302.02657.pdf
+🤔 Kuaishou-EBR: https://arxiv.org/pdf/2302.02657.pdf
 
 快手在WWW2023最新提出的算法。文章从多任务学习的角度提出了embedding-based搜索召回的优化方案。该方法利用分而治之的思想提高EBR召回结果的多样性，新颖性等多个目标。
 
