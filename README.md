@@ -75,9 +75,15 @@ SIM模型是一种基于检索的CTR模型，由阿里妈妈提出。优点是�
 
 SIM model is a retrieval-based CTR model proposed by Alibaba Mama team. Its advantage is that it can handle long sequence user behaviors while having high prediction accuracy and low computational complexity.
 
+♥ TiCoSeRec: https://arxiv.org/pdf/2212.08262.pdf
+
+TiCoSeRec是基于CoSeRec算法的，由阿里巴巴和东北大学提出。文章提出了五种不同的数据增强算法，提升序列模型推荐效果。因此，本仓库只实现数据增强算法而不给出具体推荐算法实现。
+
+TiCoSeRec, based on CoSeRec, is proposed by Alibaba and Northeast University. It presents five data argumentation algorithm to improve the performance of sequence recommender. Hence, here I just give the code of data argumentation instead of recommender.
+
 文件结构/document structure
 ========
-
+pending...
 
 快速开始/quick start
 ========
