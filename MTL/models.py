@@ -6,6 +6,8 @@ Created on Wed Apr  5 14:05:40 2023
 """
 import torch
 import torch.nn as nn
+from sklearn.cluster import KMeans
+import heapq
 
 class ESMM(nn.Module):
     def __init__(self,user_num,item_num,hidden_size_main,hidden_size_auxiliary,embedding_size):
@@ -325,6 +327,92 @@ class PLE(nn.Module):
         
         res = torch.stack(res)
         return res
+    
+class kuaishouEBR(nn.Module):
+    def __init__(self,k,hidden_size,input_size,task_num,seq_len,recall_num):
+        """
+        kuaishouEBR input parameters
+        :param k: the number of clusters for k-means
+        :param hidden_size: mlp hidden_size
+        :param input_size: data embedding size
+        :param task_num: the number of tasks
+        :param seq_len: the length of history sequence
+        :param recall_num: the number of recall items
+        """
+        super(kuaishouEBR,self).__init__()
+        self.k = k
+        self.hidden_size = hidden_size
+        self.input_size = input_size
+        self.task_num = task_num  # the task_num seems to be equal to k? 
+        self.seq_len = seq_len
+        self.recall_num = recall_num
+        self.user_tower = nn.Sequential(
+            nn.Linear((input_size * seq_len) * 2, hidden_size),
+            nn.ReLU(),
+            nn.Linear(hidden_size, hidden_size)
+        )
+        self.item_tower = nn.Sequential(
+            nn.Linear(input_size, hidden_size),
+            nn.ReLU(),
+            nn.Linear(hidden_size, hidden_size)
+        )
+        self.TAL = nn.Sequential(  # the sample weight from k parts
+            nn.Linear(hidden_size * (k+1), hidden_size),
+            nn.ReLU(),
+            nn.Linear(hidden_size, k)
+        )
+        self.k_means = KMeans(n_clusters = k, random_state=0) # This step is better to be preprocessed in dataset preprocessing.
+        self.prompt_embedding = nn.Embedding(k, input_size)   # Here I just give a instance because of complexity.
+
+    def forward(self,user,item):
+        """
+        :param user: user embedding, the concat of item embedding of history behavior of user
+        :param item: list of embeddings of all items
+        """
+        clusters = self.k_means.fit(item.detach().numpy())
+        prompts = clusters.labels_
+        buckets = [[] for _ in range(self.k)]
+        prompt_table = {} #record the cluster indicatior of item
+        for i in range(len(prompts)): #split the item pool into k parts
+            buckets[prompts[i]].append(item[i])
+            prompt_table[item[i]] = prompts[i]
+
+        prompted_user = []
+        for his_item in user: 
+            prompt = prompt_table[his_item]
+            tmp = torch.flatten(torch.cat(user[i], self.prompt_embedding(prompt), -1))
+            prompted_user.append(tmp)
+
+        prompted_user = torch.flatten(prompted_user)    
+        user = self.user_tower(prompted_user)
+        k_ans = [] # kth top_k recall item
+        for i in range(self.k): # this step can be run in parallel.
+            heap = []
+            heapq.heapify(heap)
+            for j in range(len(buckets[i])):
+                item = buckets[i][j]
+                item = self.item_tower(item)
+                sim = torch.cosine_similarity(user, item)
+                if len(heap) < self.recall_num:
+                    heapq.heappush((sim, item)) # here is better to return item_id 
+                else:
+                    heapq.heappush((sim, item))
+                    heapq.heappop()
+            k_ans.append(heap[:,1])
+        
+        res = []
+        for i in range(self.recall_num):
+            kth_item = torch.cat([k_ans[j][i] for j in range(self.k)], -1)
+            kth_inter = torch.flatten(torch.cat([user, kth_item], -1))
+            res.append(self.TAL(kth_inter))
+        
+        res = torch.stack(res)
+        return res
+        
+
+
+        
+        
         
         
         
