@@ -49,6 +49,12 @@ PLE is a multi-task learning model proposed by Tencent, aiming to solve the sees
 
 The latest algorithm proposed by Kuaishou at WWW2023. The paper proposes an optimization scheme for embedding-based retrieval recall from the perspective of multi-task learning. The method uses the divide-and-conquer idea to improve the diversity, novelty and other objectives of EBR recall results.
 
+🤔 AITM: https://arxiv.org/pdf/2105.08489.pdf
+
+AITM是美团发表在KDD2021的多任务学习算法。文章提出多个任务目标之间有先后的转化关系（曝光-点击-加购-付款），该模型使用自适应信息传递模块模拟多步转化过程中的顺序依赖关系，可以根据不同转化阶段自适应地学习要传递的信息和传递的程度。
+
+AITM is a multi-task learning algorithm published by Meituan at KDD2021. The paper proposes that there is a sequential transformation relationship between multiple task objectives (exposure-click-add to cart-payment), and the model uses an adaptive information transformation module to simulate the sequential dependency relationship in the multi-step transformation process, which can adaptively learn the information and degree of transmission according to different stages.
+
 3 序列模型/sequence models
 
 ♥ STAMP: 
@@ -83,7 +89,9 @@ TiCoSeRec, based on CoSeRec, is proposed by Alibaba and Northeast University. It
 
 文件结构/document structure
 ========
-pending...
+MTL: 多任务学习文件夹/multi-task
+sequence：序列推荐文件夹/sequential recommender
+cold：冷启动文件夹/cold start
 
 快速开始/quick start
 ========
