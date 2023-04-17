@@ -6,6 +6,7 @@ Created on Wed Apr  5 14:05:40 2023
 """
 import torch
 import torch.nn as nn
+import modules as m
 from sklearn.cluster import KMeans
 import heapq
 
@@ -410,6 +411,45 @@ class kuaishouEBR(nn.Module):
         return res
         
 
+class AITM(nn.Module):
+    def __init__(self,user_num,item_num,hidden_size,task_num):
+        """
+        SIM input parameters
+        :param user_num: int number of users
+        :param item_num: int number of items
+        :param hidden_size: embedding_size
+        :param task_num: int number of tasks
+        """
+        super(AITM,self).__init__()
+        self.user_num = user_num
+        self.item_num = item_num
+        self.task_num = task_num
+        self.hidden_size = hidden_size
+        self.user_embedding = nn.Embedding(user_num, hidden_size)
+        self.item_embedding = nn.Embedding(item_num, hidden_size)
+        self.towers = nn.ModuleList([nn.Linear(hidden_size * 2, hidden_size) \
+                                            for i in range(task_num)])
+        self.ait = m.AIT(hidden_size, hidden_size)
+        self.predictor = nn.ModuleList([nn.Linear(hidden_size, 1) \
+                                            for i in range(task_num)])
+    
+    def forward(self, user, item):
+        user = self.user_embedding(user)
+        item = self.item_embedding(item)
+        data = torch.cat([torch.flatten(user), torch.flatten(item)], -1)
+        ans = []
+        for i in range(self.task_num):
+            q = self.towers[i](data)
+            if i == 0:
+                p = q
+            z, p = self.ait(p, q)
+            res = self.predictor[i](z)
+            ans.append(res)
+        
+        ans = torch.stack(ans)
+        return ans
+    
+        
 
         
         
