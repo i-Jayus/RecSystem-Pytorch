@@ -90,7 +90,9 @@ TiCoSeRec, based on CoSeRec, is proposed by Alibaba and Northeast University. It
 文件结构/document structure
 ========
 MTL: 多任务学习文件夹/multi-task
+
 sequence：序列推荐文件夹/sequential recommender
+
 cold：冷启动文件夹/cold start
 
 快速开始/quick start
