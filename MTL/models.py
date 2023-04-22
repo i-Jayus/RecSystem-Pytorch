@@ -395,10 +395,10 @@ class kuaishouEBR(nn.Module):
                 item = self.item_tower(item)
                 sim = torch.cosine_similarity(user, item)
                 if len(heap) < self.recall_num:
-                    heapq.heappush((sim, item)) # here is better to return item_id 
+                    heapq.heappush(heap,(sim, item)) # here is better to return item_id 
                 else:
-                    heapq.heappush((sim, item))
-                    heapq.heappop()
+                    heapq.heappush(heap,(sim, item))
+                    heapq.heappop(heap)
             k_ans.append(heap[:,1])
         
         res = []
@@ -414,7 +414,7 @@ class kuaishouEBR(nn.Module):
 class AITM(nn.Module):
     def __init__(self,user_num,item_num,hidden_size,task_num):
         """
-        SIM input parameters
+        AITM input parameters
         :param user_num: int number of users
         :param item_num: int number of items
         :param hidden_size: embedding_size

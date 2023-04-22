@@ -8,6 +8,8 @@ import torch
 from torch import nn
 import modules as m
 import numpy as np
+import heapq
+import tools as t
 
 class STAMP(nn.Module):
     def __init__(self,user_num,item_num,cate_num,hidden_size=64):
@@ -210,12 +212,12 @@ class SIM(nn.Module):
         h = []
         for i in range(len(hist)):
             cate_i = self.cate_embedding(hist[i][1]).squeeze()
-            if mode == 'hard' and cate_i == cate:    
+            if self.mode == 'hard' and cate_i == cate:    
                 hist_i = self.item_embedding(hist[i][0])
                 time_i = self.time_embedding(hist[i][2])
                 h.append(torch.cat([hist_i.squeeze().detach().numpy(),\
                                     time_i.squeeze().detach().numpy()],-1))
-            elif mode == 'soft':
+            elif self.mode == 'soft':
                 hist_i = self.item_embedding(hist[i][0])
                 time_i = self.time_embedding(hist[i][2])
                 h_i = torch.cat([hist_i.squeeze().detach().numpy(),\
@@ -242,12 +244,93 @@ class SIM(nn.Module):
         return res
         
 
+class ETA(nn.Module):
+    def __init__(self,user_num,item_num,hash_size,hidden_size = 64,seq_len = 100):
+        """
+        ETA input parameters
+        :param user_num: int numbers of users
+        :param item_num: int numbers of items
+        :param hidden_size: embedding_size
+        :param hash_size: the dimension of hashed vector 
+        :param seq_len: length of sub-sequence
+        """
+        super(ETA,self).__init__()
+        self.user_num = user_num
+        self.item_num = item_num
+        self.hidden_size = hidden_size
+        self.seq_len = seq_len
+        self.user_embedding = nn.Embedding(user_num, hidden_size)
+        self.item_embedding = nn.Embedding(item_num, hidden_size)
+        self.linear =  nn.Sequential(
+            nn.Linear(hidden_size * 4, 80),
+            m.Dice(80),
+            nn.Linear(80, 40),
+            m.Dice(40),
+            nn.Linear(40, 2)
+        )
+        self.au = m.ActivationUnit(hidden_size)
+        self.hashing = nn.Linear(hidden_size,hash_size)
 
-
+    def forward(self,user,item,long_term,short_term):
+        """
+        :param user: user id
+        :param item: item id
+        :param long_term: long-term behavior sequence
+        :param short_term: short-term behavior sequence
+        """
+        user = torch.flatten(self.user_embedding(user))
+        item = torch.flatten(self.item_embedding(item))
+        hashed_item = self.hashing(item)
+        long_item = []
+        for i in range(len(long_term)):
+            long_item.append(torch.flatten(self.item_embedding(long_term[i])))
         
+        short_item = []
+        for i in range(len(short_term)):
+            short_item.append(torch.flatten(self.item_embedding(short_term[i])))
+        
+        long_item = torch.stack(long_item)
+        short_item = torch.stack(short_item)
+        heap = []
+        heapq.heapify(heap)
+        for i in range(len(long_item)):
+            cur_item = self.hashing(long_item[i])
+            hashed_item, cur_item = torch.relu(torch.sign(hashed_item)), torch.relu(torch.sign(cur_item))
+            sim = t.Hamming_distance_list(hashed_item, cur_item)
+            if len(heap) < self.seq_len:
+                heapq.heappush(heap, (sim, long_item[i])) 
+            else:
+                heapq.heappush(heap, (sim, long_item[i]))
+                heapq.heappop(heap)
+        
+        topK = heap[:,1]
+        weights = []
+        for i in range(len(topK)):
+            weight = self.au(topK[i],item)
+            weights.append(weight)
             
+        long = torch.zeros_like(topK[0])
+        for i in range(len(topK)):
+            long += torch.tensor(weights[i] * topK[i], dtype=torch.float32)
+        
+        weights = []
+        for i in range(len(short_item)):
+            weight = self.au(short_item[i],item)
+            weights.append(weight)
+            
+        short = torch.zeros_like(short_item[0])
+        for i in range(len(short_item)):
+            short += torch.tensor(weights[i] * short_item[i], dtype=torch.float32)
+        
+        res = torch.cat([user,item,long,short],-1)
+        res = self.linear(res)
+        return res
         
         
+
+
+        
+
 
 
 
