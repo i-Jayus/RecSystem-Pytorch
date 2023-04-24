@@ -15,11 +15,11 @@ Currently, there are many open-source libraries for recommendation systems, but 
 模型列表/model list
 ========
 1 冷启动/cold start
-
+--
 coming soon...
 
 2 多任务学习/multi-task models
-
+--
 🤔 ESMM: https://arxiv.org/pdf/1804.07931.pdf
 
 ESMM模型是一种多任务学习的方法，用于预测点击后的转化率。它同时学习两个任务：点击率和点击后转化率，并利用它们的乘积关系来隐式地学习转化率，解决了样本选择偏差和数据稀疏问题。
@@ -63,7 +63,7 @@ AITM是美团发表在KDD2021的多任务学习算法。文章提出多个任务
 AITM is a multi-task learning algorithm published by Meituan at KDD2021. The paper proposes that there is a sequential transformation relationship between multiple task objectives (exposure-click-add to cart-payment), and the model uses an adaptive information transformation module to simulate the sequential dependency relationship in the multi-step transformation process, which can adaptively learn the information and degree of transmission according to different stages.
 
 3 序列模型/sequence models
-
+--
 ♥ STAMP: 
 
 coming soon...
