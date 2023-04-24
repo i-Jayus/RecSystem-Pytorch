@@ -1,6 +1,8 @@
 RecSystem-Pytorch
 ========
-![](https://img.shields.io/badge/language-Python-blue) ![](https://img.shields.io/badge/framework-Pytorch-blue) ![](https://img.shields.io/badge/domain-sequence-red) ![](https://img.shields.io/badge/domain-MTL-red) ![](https://img.shields.io/badge/domain-cold-red) ![](https://img.shields.io/badge/test-passed-green) ![](https://img.shields.io/badge/license-MIT-green)
+![](https://img.shields.io/github/stars/i-Jayus/RecSystem-Pytorch.svg?style=social) ![](https://img.shields.io/github/forks/i-Jayus/RecSystem-Pytorch.svg?style=social)
+![](https://img.shields.io/github/watchers/i-Jayus/RecSystem-Pytorch.svg?style=social) ![](https://img.shields.io/github/issues/i-Jayus/RecSystem-Pytorch.svg?style=social) 
+![](https://img.shields.io/badge/language-Python-blue) ![](https://img.shields.io/badge/framework-Pytorch-blue) ![](https://img.shields.io/badge/domain-Cold,MTL,Sequence-red) ![](https://img.shields.io/badge/test-passed-green) ![](https://img.shields.io/badge/license-MIT-green)
 ========
 
 写在前面/preface
