@@ -1,3 +1,8 @@
+RecSystem-Pytorch
+========
+![](https://img.shields.io/badge/language-Python-blue) ![](https://img.shields.io/badge/framework-Pytorch-blue) ![](https://img.shields.io/badge/domain-sequence-red) ![](https://img.shields.io/badge/domain-MTL-red) ![](https://img.shields.io/badge/domain-cold-red) ![](https://img.shields.io/badge/test-passed-green) ![](https://img.shields.io/badge/license-MIT-green)
+========
+
 写在前面/preface
 ========
 目前已经有许多推荐系统开源库，但是实现的模型大多比较经典和古老。因此本人决定把一些比较新的，有代表性的工作进行复现，记录自己学习的过程并且分享给大家。
