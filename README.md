@@ -16,7 +16,7 @@ Currently, there are many open-source libraries for recommendation systems, but 
 ========
 1 冷启动/cold start
 --
-coming soon...
+❄ DropoutNet: coming soon...
 
 2 多任务学习/multi-task models
 --
