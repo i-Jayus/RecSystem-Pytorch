@@ -88,6 +88,9 @@ SIM模型是一种基于检索的CTR模型，由阿里妈妈提出。优点是�
 
 SIM model is a retrieval-based CTR model proposed by Alibaba Mama team. Its advantage is that it can handle long sequence user behaviors while having high prediction accuracy and low computational complexity.
 
+♥ MIMN: coming soon...
+
+
 ♥ ETA: https://arxiv.org/pdf/2108.04468.pdf
 
 ETA模型是SIM模型的改进版，使用局部敏感哈希加速商品查找，适用于超长序列建模，同时具有较高的预测准确率和较低的计算复杂度。
